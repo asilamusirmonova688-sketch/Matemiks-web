@@ -3,8 +3,8 @@
    haftalik hisobot, oilaviy duel, hayotiy topshiriqlar
    ========================================================= */
 (function(){
-function P(){if(!DB.parent)DB.parent={pin:null,limit:30,eye:true,bed:{on:false,from:"21:00",to:"07:00"},custom:{}};
-  var p=DB.parent;if(p.custom==null)p.custom={};if(!p.bed)p.bed={on:false,from:"21:00",to:"07:00"};return p}
+function P(){if(!DB.parent)DB.parent={pin:null,limit:60,limitSet:true,eye:true,bed:{on:false,from:"21:00",to:"07:00"},custom:{}};
+  var p=DB.parent;if(!p.limitSet){if(p.limit===30)p.limit=60;p.limitSet=true}if(p.custom==null)p.custom={};if(!p.bed)p.bed={on:false,from:"21:00",to:"07:00"};return p}
 function rt(p){p=p||S;if(!p.rt)p.rt={act:{},pend:{},done:0};return p.rt}
 function useMin(p,d){p=p||S;return Math.floor(((p.use||{})[d||today()]||0)/60)}
 function limitFor(p){var l=P().limit;if(!l)return 0;return l+(((p||S).extra||{})[today()]||0)}
@@ -122,7 +122,7 @@ function drawParent(){
   $("pa-body").innerHTML=h;
   // ulash
   document.querySelectorAll("#pa-body [data-kid]").forEach(function(b){b.onclick=function(){KID=b.dataset.kid;drawParent()}});
-  document.querySelectorAll("#pa-body [data-lim]").forEach(function(b){b.onclick=function(){p.limit=+b.dataset.lim;save();drawParent()}});
+  document.querySelectorAll("#pa-body [data-lim]").forEach(function(b){b.onclick=function(){p.limit=+b.dataset.lim;p.limitSet=true;save();drawParent()}});
   var e;if(e=$("pa-eye"))e.onchange=function(){p.eye=this.checked;save()};
   if(e=$("pa-bed"))e.onchange=function(){p.bed.on=this.checked;save()};
   if(e=$("pa-from"))e.onchange=function(){p.bed.from=this.value||"21:00";save()};
