@@ -324,7 +324,24 @@
     <button class="tile sm dim" style="background:var(--gold)" data-soon2><span class="soon" data-t="soon"></span><span class="em">🎯</span><span data-t="gm_24"></span></button>
     <button class="tile sm dim" style="background:#0F6E56" data-soon2><span class="soon" data-t="soon"></span><span class="em">🌀</span><span data-t="gm_maze"></span></button>
     <button class="tile sm" style="background:#534AB7" id="go-logic"><span class="em">🕵️</span><span data-t="gm_logic"></span></button>
+    <button class="tile sm" style="background:#BA7517" id="go-abacus"><span class="em">🧮</span><span data-t="gm_abacus"></span></button>
   </div>
+</section>
+
+<!-- ABAKUS -->
+<section id="s-abacus" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" id="ab-round"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="chips" id="ab-modes" style="justify-content:center;margin-bottom:8px"></div>
+  <div class="chips" id="ab-diff" style="justify-content:center;margin-bottom:10px"></div>
+  <div class="info" id="ab-info"></div>
+  <div id="ab-task" class="abtask"></div>
+  <div id="ab-main"></div>
+  <p class="fb" id="ab-fb" style="font-size:18px;min-height:26px;text-align:center"></p>
+  <div id="ab-act"></div>
 </section>
 
 <!-- LABIRINT -->
@@ -683,8 +700,10 @@
 <script src="lang/know-i18n.js"></script>
 <script src="lang/games2-i18n.js"></script>
 <script src="lang/parent-i18n.js"></script>
+<script src="lang/life-i18n.js"></script>
 <script src="lang/adv-i18n.js"></script>
 <script src="app.js"></script>
+<script src="life.js"></script>
 <script src="chess-engine.js"></script>
 <script src="chess.js"></script>
 <script src="world-data.js"></script>
@@ -701,7 +720,9 @@
 <script src="games2.js"></script>
 <script src="sudoku2.js"></script>
 <script src="games3.js"></script>
+<script src="games4.js"></script>
 <script src="parent.js"></script>
+<script src="backup.js"></script>
 <script src="adv.js"></script>
 <script src="extras.js"></script>
 <script src="diploma.js"></script>

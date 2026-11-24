@@ -102,6 +102,8 @@ function drawParent(){
     h+="<div class='card'><label class='tgl'><input type='checkbox' id='pa-bed'"+(p.bed.on?" checked":"")+"> 🌙 "+t("pa_bed")+"</label>"+
        "<div class='tms'><span>"+t("pa_from")+"</span><input type='time' id='pa-from' value='"+p.bed.from+"'><span>"+t("pa_to")+"</span><input type='time' id='pa-to' value='"+p.bed.to+"'></div></div>";
     h+="<div class='card'><h3>📅 "+t("pa_today")+"</h3>"+profiles().map(function(q){var l=limitFor(q);return "<div class='prog'><span style='min-width:40%'>"+buddy(q).e+" "+esc(q.name)+"</span><span>"+t("pa_min",{m:useMin(q)})+(l?" / "+l:"")+"</span></div>"}).join("")+"</div>";
+    h+=voiceCard();
+    if(window.backupCard)h+=backupCard();
     h+="<button class='btn sec small' id='pa-pin'>🔒 "+t("pa_chpin")+"</button>";
   }else if(TAB==="rep"){h+=kidChips()+(k?report(k):"")}
   else if(TAB==="duel"){
@@ -125,6 +127,9 @@ function drawParent(){
   if(e=$("pa-bed"))e.onchange=function(){p.bed.on=this.checked;save()};
   if(e=$("pa-from"))e.onchange=function(){p.bed.from=this.value||"21:00";save()};
   if(e=$("pa-to"))e.onchange=function(){p.bed.to=this.value||"07:00";save()};
+  if(window.bindBackup)bindBackup();
+  if(e=$("vo-test"))e.onclick=function(){speak(t("vo_sample"))};
+  if(e=$("vo-inst"))e.onclick=function(){try{AndroidApp.openStore("com.github.olga_yakovleva.rhvoice.android")}catch(x){}};
   if(e=$("pa-pin"))e.onclick=function(){PIN.cb=function(){};PIN.buf="";PIN.mode="new";pinShow()};
   if(e=$("pa-duel"))e.onclick=function(){duelOpen(KID)};
   document.querySelectorAll("#pa-body [data-act]").forEach(function(c){c.onchange=function(){var r=rt(k);if(this.checked)r.act[c.dataset.act]=1;else delete r.act[c.dataset.act];save()}});
@@ -135,6 +140,24 @@ function drawParent(){
 }
 document.querySelectorAll("#pa-tabs button").forEach(function(b){b.onclick=function(){TAB=b.dataset.tab;drawParent()}});
 $("pa-back").onclick=function(){if(S)openMenu();else show("s-pick")};
+
+/* ---------------- OVOZ ---------------- */
+function lname(c){var x=LANGS.filter(function(l){return l.c===c})[0];return x?x.f+" "+x.n:c}
+function voiceCard(){
+  var vl=voiceLang(L),ok=canSpeak(),h="<div class='card'><h3>🔊 "+t("vo_title")+"</h3>";
+  h+="<p style='margin:0 0 8px'><b>"+lname(L)+"</b>: "+(!ok?t("vo_none"):vl===L?t("vo_native"):t("vo_fallback",{v:lname(vl)}))+"</p>";
+  h+="<button class='btn sec small' id='vo-test'>"+t("vo_test")+"</button>";
+  if(window.AndroidApp&&vl!==L&&["uz","ky","kk","tk","tg"].indexOf(L)>=0){
+    h+="<button class='btn small' id='vo-inst' style='background:#0F6E56;margin-top:8px'>"+t("vo_install")+"</button><p class='small-note'>"+t("vo_steps",{l:lname(L)})+"</p>";
+  }else if(!window.AndroidApp&&vl!==L)h+="<p class='small-note'>"+t("vo_web_note")+"</p>";
+  return h+"</div>";
+}
+var VO_HINT=false;
+function voiceHint(){
+  if(VO_HINT||!window.AndroidApp||!S||["uz","ky"].indexOf(L)<0)return;VO_HINT=true;
+  try{if(DB.voHint===L||voiceLang(L)===L)return}catch(e){return}
+  DB.voHint=L;save();setTimeout(function(){toast(t("vo_hint"))},2500);
+}
 
 /* ---------------- HAFTALIK HISOBOT ---------------- */
 function report(k){
@@ -208,7 +231,7 @@ function menuExtras(){
   var r=rt(),n=Object.keys(r.act).filter(function(id){return !r.pend[id]}).length;
   $("go-rtasks").textContent="🏡 "+t("rt_short")+(n?" ("+n+")":"");
 }
-var _om=openMenu;window.openMenu=openMenu=function(){_om();menuExtras();tick()};
+var _om=openMenu;window.openMenu=openMenu=function(){_om();menuExtras();tick();voiceHint()};
 $("go-rtasks").onclick=openTasks;
 $("go-parent").onclick=openParent;
 window.openParent=openParent;window._duel=duelOpen;

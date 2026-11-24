@@ -428,6 +428,45 @@ body.shake{animation:shk .4s}
   body.printdipl #dp-img{position:fixed;left:0;top:0;width:100%;box-shadow:none;border-radius:0}
   @page{size:landscape;margin:8mm}}
 
+/* ===== Zaxira ===== */
+.bkcode{width:100%;box-sizing:border-box;height:96px;margin:10px 0 8px;font:12px/1.35 ui-monospace,Menlo,monospace;border:2px solid #EAD3A6;border-radius:12px;padding:8px;background:#FFFDF8;color:var(--ink);word-break:break-all;resize:vertical}
+.bkfile{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.bkfile input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* ===== Soat va pul ===== */
+.pics .clk{width:170px;height:170px;display:block;margin:0 auto}
+.mrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;letter-spacing:0}
+.mnote{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;height:46px;padding:0 8px;border-radius:8px;border:2px solid rgba(0,0,0,.18);color:#2B2118;box-shadow:inset 0 0 0 3px rgba(255,255,255,.45);font-size:18px;line-height:1.05}
+.mnote small{font-size:11px;font-weight:800}
+.mitem{display:inline-flex;flex-direction:column;align-items:center;font-size:40px;line-height:1.1}
+.mitem i{font-style:normal;font-size:14px;font-weight:900;background:#FFF1C9;border-radius:8px;padding:1px 6px;color:#26215C}
+
+/* ===== Abakus ===== */
+.abtask{text-align:center;min-height:8px}
+.abtg{display:inline-block;font-size:54px;font-weight:900;color:#26215C;background:#FFF1C9;border-radius:18px;padding:0 24px;margin-bottom:8px}
+.abacus{display:flex;justify-content:center;gap:10px;background:#8B5A2B;border-radius:18px;padding:14px 16px 26px;border:6px solid #5E3A17;margin:0 auto;width:max-content;max-width:100%}
+.rod{position:relative;display:flex;flex-direction:column;align-items:center;width:52px;background:linear-gradient(90deg,transparent 23px,#D9C7A3 23px,#D9C7A3 29px,transparent 29px)}
+.heaven{height:78px;display:flex;flex-direction:column;justify-content:flex-start}
+.heaven .bead.on{margin-top:44px}
+.bead:not(.on){filter:saturate(.75) brightness(.95)}
+.beam{width:64px;height:10px;background:#3B2410;border-radius:3px;margin:0 -6px}
+.earth{height:170px;display:flex;flex-direction:column;justify-content:flex-start;padding-top:2px}
+.earth .bead.gap{margin-top:auto}
+.bead{width:50px;height:30px;border-radius:50%;border:none;margin:2px 0;background:radial-gradient(circle at 35% 35%,#FFE3A3,#E0A43A 60%,#9C6516);box-shadow:0 2px 0 rgba(0,0,0,.35);padding:0;cursor:default;transition:margin .15s}
+.abacus.live .bead{cursor:pointer}
+.bead.h{background:radial-gradient(circle at 35% 35%,#FFC2B8,#E24B4A 60%,#8E1F1F)}
+/* faol pastki munchoqlar yuqoriga — bo'sh joy pastda */
+.earth{flex-direction:column}
+.rodv{position:absolute;bottom:-24px;font-style:normal;font-weight:900;color:#FFF1C9;font-size:18px}
+.flash{font-size:88px;font-weight:900;color:#26215C;text-align:center;min-height:150px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:22px;border:3px solid #F3E3C4}
+.flash.pop{animation:fpop .25s}
+@keyframes fpop{from{transform:scale(.6);opacity:.2}to{transform:none;opacity:1}}
+.abq{text-align:center;font-weight:900;font-size:20px;margin:4px 0}
+.abin{text-align:center;font-size:44px;font-weight:900;color:#26215C;background:#fff;border-radius:16px;border:3px solid #EAD3A6;margin:0 auto 10px;max-width:220px;min-height:56px}
+.abpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px;margin:0 auto}
+.abpad button{font:inherit;font-size:26px;font-weight:900;height:56px;border-radius:14px;border:2px solid var(--ans-border);background:var(--light);color:var(--ans-ink);cursor:pointer}
+.abpad .okk{background:var(--green);color:#fff;border-color:var(--green)}
+
 /* ===== iPhone (web-ilova) ===== */
 html{-webkit-text-size-adjust:100%}
 body{touch-action:manipulation;overscroll-behavior-y:none}

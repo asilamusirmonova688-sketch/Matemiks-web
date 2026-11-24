@@ -99,7 +99,7 @@ var R=Math.random;
 function $(id){return document.getElementById(id)}
 var TIMERS=[];
 function stopTimers(){raceStop();if(T&&T.timer){clearInterval(T.timer);T.timer=null}}
-function show(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("on")});$(id).classList.add("on");window.scrollTo(0,0)}
+function show(id){var cs=document.querySelector(".screen.on");if(cs&&cs.id!==id&&Date.now()-SPK_T>400)stopSpeak();document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("on")});$(id).classList.add("on");window.scrollTo(0,0)}
 function rnd(a,b){return Math.floor(R()*(b-a+1))+a}
 function pick(arr){return arr[rnd(0,arr.length-1)]}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rnd(0,i),x=a[i];a[i]=a[j];a[j]=x}return a}
@@ -183,18 +183,90 @@ function speechText(Q){
   return s.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
 }
 var VOICE_FALLBACK={uz:"tr",tg:"ru",kk:"ru",ky:"ru",tk:"tr"};
+/* --- ovozni moslash: raqamlarni so'z bilan va harflarni boshqa til ovoziga moslab o'qish --- */
+var NUMW={
+ uz:{u:["nol","bir","ikki","uch","to'rt","besh","olti","yetti","sakkiz","to'qqiz"],t:["","o'n","yigirma","o'ttiz","qirq","ellik","oltmish","yetmish","sakson","to'qson"],h:"yuz",k:"ming",m:"million",c:"butun",p:"foiz"},
+ tk:{u:["nol","bir","iki","üç","dört","bäş","alty","ýedi","sekiz","dokuz"],t:["","on","ýigrimi","otuz","kyrk","elli","altmyş","ýetmiş","segsen","togsan"],h:"ýüz",k:"müň",m:"million",c:"bitin",p:"göterim"},
+ kk:{u:["нөл","бір","екі","үш","төрт","бес","алты","жеті","сегіз","тоғыз"],t:["","он","жиырма","отыз","қырық","елу","алпыс","жетпіс","сексен","тоқсан"],h:"жүз",k:"мың",m:"миллион",c:"бүтін",p:"пайыз"},
+ ky:{u:["нөл","бир","эки","үч","төрт","беш","алты","жети","сегиз","тогуз"],t:["","он","жыйырма","отуз","кырк","элүү","алтымыш","жетимиш","сексен","токсон"],h:"жүз",k:"миң",m:"миллион",c:"бүтүн",p:"пайыз"}
+};
+function numTurkic(w,n){
+  if(n<10)return w.u[n];
+  var parts=[];
+  if(n>=1000000){var mm=Math.floor(n/1000000);parts.push((mm>1?numTurkic(w,mm)+" ":"")+w.m);n%=1000000}
+  if(n>=1000){var k=Math.floor(n/1000);parts.push((k>1?numTurkic(w,k)+" ":"")+w.k);n%=1000}
+  if(n>=100){var h=Math.floor(n/100);parts.push((h>1?w.u[h]+" ":"")+w.h);n%=100}
+  if(n>=10){parts.push(w.t[Math.floor(n/10)]);n%=10}
+  if(n>0)parts.push(w.u[n]);
+  return parts.join(" ");
+}
+function numTg(n){
+  var U=["сифр","як","ду","се","чор","панҷ","шаш","ҳафт","ҳашт","нӯҳ"],T=["","даҳ","бист","сӣ","чил","панҷоҳ","шаст","ҳафтод","ҳаштод","навад"],
+      TEEN=["даҳ","ёздаҳ","дувоздаҳ","сенздаҳ","чордаҳ","понздаҳ","шонздаҳ","ҳабдаҳ","ҳаждаҳ","нуздаҳ"],H=["","сад","дусад","сесад","чорсад","панҷсад","шашсад","ҳафтсад","ҳаштсад","нӯҳсад"];
+  if(n<10)return U[n];
+  var parts=[];
+  if(n>=1000000){var mm=Math.floor(n/1000000);parts.push((mm>1?numTg(mm)+" ":"")+"миллион");n%=1000000}
+  if(n>=1000){var k=Math.floor(n/1000);parts.push((k>1?numTg(k)+" ":"")+"ҳазор");n%=1000}
+  if(n>=100){parts.push(H[Math.floor(n/100)]);n%=100}
+  if(n>=20){parts.push(T[Math.floor(n/10)]);n%=10;if(n)parts.push(U[n])}
+  else if(n>=10)parts.push(TEEN[n-10]);
+  else if(n>0)parts.push(U[n]);
+  return parts.join("у ");
+}
+function numWords(lang,n){if(lang==="tg")return numTg(n);var w=NUMW[lang];return w?numTurkic(w,n):String(n)}
+var LETTERMAP={
+ "uz>tr":[[/s[ʻ'’‘`ʼ]?h/g,"ş"],[/S[ʻ'’‘`ʼ]?[hH]/g,"Ş"],[/c[ʻ'’‘`ʼ]?h/g,"ç"],[/C[ʻ'’‘`ʼ]?[hH]/g,"Ç"],[/[oO][ʻ'’‘`ʼ]/g,function(x){return x[0]}],[/[gG][ʻ'’‘`ʼ]/g,function(x){return x[0]}],[/ö/g,"o"],[/Ö/g,"O"],[/ğ/g,"g"],[/Ğ/g,"G"],[/q/g,"k"],[/Q/g,"K"],[/x/g,"h"],[/X/g,"H"],[/j/g,"c"],[/J/g,"C"],[/[ʻ'’‘`ʼ]/g,""],[/I/g,"İ"]],
+ "tk>tr":[[/ä/g,"e"],[/Ä/g,"E"],[/ň/g,"n"],[/Ň/g,"N"],[/ý/g,"y"],[/Ý/g,"Y"],[/ž/g,"j"],[/Ž/g,"J"],[/w/g,"v"],[/W/g,"V"],[/I/g,"İ"]],
+ "kk>ru":[[/ә/g,"а"],[/Ә/g,"А"],[/ғ/g,"г"],[/Ғ/g,"Г"],[/қ/g,"к"],[/Қ/g,"К"],[/ң/g,"н"],[/Ң/g,"Н"],[/ө/g,"о"],[/Ө/g,"О"],[/[ұү]/g,"у"],[/[ҰҮ]/g,"У"],[/һ/g,"х"],[/Һ/g,"Х"],[/і/g,"и"],[/І/g,"И"]],
+ "ky>ru":[[/ң/g,"н"],[/Ң/g,"Н"],[/ө/g,"о"],[/Ө/g,"О"],[/ү/g,"у"],[/Ү/g,"У"]],
+ "tg>ru":[[/ғ/g,"г"],[/Ғ/g,"Г"],[/ӣ/g,"и"],[/Ӣ/g,"И"],[/қ/g,"к"],[/Қ/g,"К"],[/ӯ/g,"у"],[/Ӯ/g,"У"],[/ҳ/g,"х"],[/Ҳ/g,"Х"],[/ҷ/g,"дж"],[/Ҷ/g,"Дж"]]
+};
+function prepSpeech(text,lang,vl){
+  var s=String(text).replace(/\p{Extended_Pictographic}|️|‍/gu," ");
+  if(!vl||vl===lang)return s.replace(/\s+/g," ").trim();
+  var w=NUMW[lang]||lang==="tg";
+  if(w){
+    s=s.replace(/(\d)[  ](?=\d{3}\b)/g,"$1");
+    s=s.replace(/(\d+)\s*%/g,function(_,a){return numWords(lang,+a)+" "+(lang==="tg"?"фоиз":NUMW[lang].p)});
+    s=s.replace(/(\d+),(\d+)/g,function(_,a,b){return numWords(lang,+a)+" "+(lang==="tg"?"бутуну":NUMW[lang].c)+" "+numWords(lang,+b)});
+    s=s.replace(/(\d+):(\d\d)/g,function(_,a,b){return numWords(lang,+a)+" "+(+b?numWords(lang,+b):"")});
+    s=s.replace(/\d+/g,function(x){return x.length>9?x:numWords(lang,+x)});
+  }
+  var mp=LETTERMAP[lang+">"+vl];
+  if(mp)mp.forEach(function(r){s=s.replace(r[0],r[1])});
+  return s.replace(/\s+/g," ").trim();
+}
+var SPK_T=0;
+function stopSpeak(){
+  try{if(window.AndroidApp)AndroidApp.stopSpeaking()}catch(e){}
+  try{if(TTSN&&TTSN.stop)TTSN.stop()}catch(e){}
+  try{if("speechSynthesis" in window)speechSynthesis.cancel()}catch(e){}
+}
+function webVoice(lang){
+  if(!("speechSynthesis" in window))return null;
+  var vs=speechSynthesis.getVoices();
+  return vs.filter(function(v){return v.lang.toLowerCase().replace("_","-").indexOf(lang)===0})[0]||(VOICE_FALLBACK[lang]&&vs.filter(function(v){return v.lang.toLowerCase().indexOf(VOICE_FALLBACK[lang])===0})[0])||null;
+}
+function voiceLang(lang){
+  try{if(window.AndroidApp)return AndroidApp.voiceLang(lang)}catch(e){}
+  if(TTSN)return lang;
+  var v=webVoice(lang);return v?v.lang.slice(0,2).toLowerCase():lang;
+}
 function speak(text){
-  try{if(window.AndroidApp){AndroidApp.speak(String(text),L);return}}catch(e){}
-  if(TTSN){TTSN.speak(text,{language:L,rate:0.9}).catch(function(e){if(e&&e.code==="not_granted"){TTSN=null;refreshSay()}});return}
+  SPK_T=Date.now();
+  try{if(window.AndroidApp){var avl=AndroidApp.voiceLang(L);AndroidApp.speak(prepSpeech(text,L,avl),L);return}}catch(e){}
+  if(TTSN){TTSN.speak(prepSpeech(text,L,L),{language:L,rate:0.9}).catch(function(e){if(e&&e.code==="not_granted"){TTSN=null;refreshSay()}});return}
   if(!("speechSynthesis" in window))return;
   try{
     speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(text),vs=speechSynthesis.getVoices();
-    var v=vs.filter(function(v){return v.lang.toLowerCase().indexOf(L)===0})[0]||(VOICE_FALLBACK[L]&&vs.filter(function(v){return v.lang.toLowerCase().indexOf(VOICE_FALLBACK[L])===0})[0]);
+    var v=webVoice(L),vl=v?v.lang.slice(0,2).toLowerCase():L;
+    var u=new SpeechSynthesisUtterance(prepSpeech(text,L,vl));
     if(v){u.voice=v;u.lang=v.lang}else u.lang=L;
-    u.rate=.9;speechSynthesis.speak(u);
+    u.rate=vl===L?.9:.82;speechSynthesis.speak(u);
   }catch(e){}
 }
+document.addEventListener("visibilitychange",function(){if(document.hidden)stopSpeak()});
+window.addEventListener("pagehide",stopSpeak);
 var CURQ={};
 document.querySelectorAll("[data-say]").forEach(function(b){b.onclick=function(){var Q=CURQ[b.dataset.say];if(Q)speak(speechText(Q))}});
 
