@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Matemiks">
+<meta name="theme-color" content="#FFF8EC">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<title>Matemiks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&text=%F0%9F%87%A6%F0%9F%87%A7%F0%9F%87%A8%F0%9F%87%A9%F0%9F%87%AA%F0%9F%87%AB%F0%9F%87%AC%F0%9F%87%AD%F0%9F%87%AE%F0%9F%87%AF%F0%9F%87%B0%F0%9F%87%B1%F0%9F%87%B2%F0%9F%87%B3%F0%9F%87%B4%F0%9F%87%B5%F0%9F%87%B6%F0%9F%87%B7%F0%9F%87%B8%F0%9F%87%B9%F0%9F%87%BA%F0%9F%87%BB%F0%9F%87%BC%F0%9F%87%BD%F0%9F%87%BE%F0%9F%87%BF" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bg" aria-hidden="true"></div>
+<div class="wrap">
+
+<!-- TIL TANLASH -->
+<section id="s-lang" class="screen">
+  <p class="big">🌍</p>
+  <div class="hello" id="hello">Salom!</div>
+  <div class="langs" id="langs"></div>
+</section>
+
+<!-- TANISHUV -->
+<section id="s-intro" class="screen">
+  <div class="card slide">
+    <span class="se" id="in-e">🦉</span>
+    <h2 id="in-t"></h2>
+    <p id="in-b" style="margin:6px 0"></p>
+    <div class="dots" id="in-dots"></div>
+    <button class="btn" id="in-next"></button>
+    <button class="linkbtn" id="in-skip" style="color:var(--muted)" data-t="skip"></button>
+  </div>
+</section>
+
+<!-- PROFIL TANLASH -->
+<section id="s-pick" class="screen">
+  <div class="greet"><b id="pk-greet"></b><button class="lsw" data-lang aria-label="Language">🌍</button></div>
+  <div class="season" id="pk-season" style="display:none"></div>
+  <p class="big" style="font-size:52px">🧮</p>
+  <h1 data-t="app_title"></h1>
+  <h2 style="margin-top:8px" data-t="who_plays"></h2>
+  <div class="profiles" id="profiles"></div>
+  <button class="giftbox" id="pk-gift"><span class="gi">🎁</span><span><b data-t="daily_teaser"></b><small data-t="daily_teaser_sub"></small></span></button>
+  <p class="trust" data-t="trust"></p>
+  <button class="parent" id="pk-parent" data-t="parents_btn"></button>
+</section>
+
+<!-- FORMA -->
+<section id="s-start" class="screen">
+  <div class="greet"><span></span><button class="lsw" data-lang aria-label="Language">🌍</button></div>
+  <p class="big" id="f-ico">🧮</p>
+  <h1 id="f-title"></h1>
+  <p style="text-align:center;margin-top:0;color:var(--muted)" id="f-sub"></p>
+  <div class="card">
+    <label for="name" data-t="your_name"></label>
+    <input id="name" type="text" maxlength="20" autocomplete="off" data-tp="name_ph">
+    <label data-t="your_age"></label>
+    <div class="chips" id="ages"></div>
+    <label data-t="level"></label>
+    <div class="lvl" id="levels-start"></div>
+    <p class="small-note" data-t="level_note"></p>
+    <details class="gift" id="gift">
+      <summary><span class="gi">🎁</span><span><b data-t="gift_title"></b> <span data-t="gift_text"></span><br><small style="color:var(--muted)" data-t="gift_hint"></small></span></summary>
+      <div class="gbody">
+        <label data-t="fav_color"></label><div class="chips" id="fav-color"></div>
+        <label data-t="fav_animal"></label><div class="chips" id="fav-animal"></div>
+        <label data-t="fav_food"></label><div class="chips" id="fav-food"></div>
+        <label data-t="fav_hobby"></label><div class="chips" id="fav-hobby"></div>
+        <label data-t="fav_nick"></label><div class="chips" id="fav-nick"></div>
+      </div>
+    </details>
+    <label class="toggle" id="tts-row"><input type="checkbox" id="f-tts"> <span data-t="tts_label"></span></label>
+    <p class="err" id="start-err"></p>
+    <button class="btn" id="start-go"></button>
+    <button class="btn sec small" id="f-back" style="display:none" data-t="back"></button>
+    <button class="linkbtn" id="f-del" style="display:none"></button>
+  </div>
+</section>
+
+<!-- MENYU -->
+<section id="s-menu" class="screen">
+  <div class="top">
+    <span class="pill" id="m-name">👋</span>
+    <span class="pill">🔥 <span id="m-streak">0</span> &nbsp;⭐ <span class="star-count">0</span></span>
+    <span style="display:flex;gap:6px"><button class="lsw" data-lang aria-label="Language">🌍</button><button class="icon-btn" id="snd" aria-label="Sound">🔊</button></span>
+  </div>
+  <div class="buddy"><span class="be" id="m-buddy">🦉</span><div class="bubble" id="m-bubble"></div></div>
+  <div class="bstage"><span id="m-stage"></span><button id="go-shop" data-t="m_shop"></button><button id="go-album" data-t="m_album"></button></div>
+  <button class="giftbox" id="m-daily"><span class="gi">🎁</span><span><b data-t="daily_title"></b><small id="m-daily-sub"></small></span></button>
+  <div class="goal">
+    <div class="gt"><span data-t="goal_today"></span><span id="m-goal">0 / 20</span></div>
+    <div class="bar"><div id="m-goalbar" style="width:0%"></div></div>
+  </div>
+  <div class="card" style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+    <span style="font-weight:700;font-size:17px"><span data-t="level_label"></span> <span id="m-level"></span></span>
+    <button class="chip" id="m-chlevel" style="height:44px;font-size:16px" data-t="change"></button>
+  </div>
+  <div class="menu">
+    <button class="tile wide advtile" id="go-adv"><span class="em">🗺️</span><span><span data-t="adv_menu"></span><small data-t="adv_menu_sub"></small></span></button>
+    <button class="tile" style="background:var(--green)" id="go-practice"><span class="em">✏️</span><span data-t="sec_practice"></span></button>
+    <button class="tile" style="background:var(--orange)" id="go-test"><span class="em">📝</span><span data-t="sec_test"></span></button>
+    <button class="tile" style="background:var(--pink)" id="go-games"><span class="em">🎮</span><span data-t="sec_games"></span></button>
+    <button class="tile" style="background:var(--purple)" id="go-puzzles"><span class="em">🧩</span><span data-t="sec_puzzle"></span></button>
+    <button class="tile wide" style="background:var(--blue)" id="go-know"><span class="em">📚</span><span><span data-t="sec_know"></span><small data-t="know_sub"></small></span></button>
+  </div>
+  <p class="fb" id="m-msg" style="font-size:17px;min-height:8px"></p>
+  <div class="mini">
+    <button id="go-growth" data-t="m_growth"></button>
+    <button id="go-family" data-t="m_family"></button>
+    <button id="go-about" data-t="m_about"></button>
+    <button id="go-switch" data-t="m_switch"></button>
+    <button id="go-rtasks">🏡</button>
+    <button id="go-parent" data-t="pa_btn"></button>
+  </div>
+</section>
+
+<!-- MASHQ: MAVZU TANLASH -->
+<section id="s-topics" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="pr_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div id="tp-mist"></div>
+  <h3 data-t="pr_level_now"></h3>
+  <div id="tp-cur"></div>
+  <details class="more"><summary data-t="pr_other"></summary><div id="tp-other"></div></details>
+</section>
+
+<!-- MASHQ: MAVZU TUSHUNTIRISHI -->
+<section id="s-learn" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="ln-back" aria-label="Back">⬅</button>
+    <span class="pill" id="ln-pill"></span>
+    <span></span>
+  </div>
+  <div class="card" style="text-align:center">
+    <p class="big" id="ln-e"></p>
+    <h2 id="ln-t"></h2>
+    <div class="info" style="text-align:left" id="ln-i"></div>
+    <div id="ln-mt" style="display:none">
+      <label data-t="mt_choose" style="text-align:left"></label>
+      <div class="ntab" id="ln-nums"></div>
+    </div>
+    <button class="btn" id="ln-go" data-t="learn_go"></button>
+  </div>
+</section>
+
+<!-- MASHQ -->
+<section id="s-practice" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="p-back" aria-label="Back">⬅</button>
+    <span class="pill">✅ <span id="p-ok">0</span> &nbsp; ❌ <span id="p-bad">0</span></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="prog" id="p-prog"><span id="p-mast"></span><div class="bar"><div id="p-mbar" style="width:0%"></div></div><span class="dif" id="p-dif"></span></div>
+  <div class="card">
+    <button class="say" data-say="p" aria-label="Read">🔊</button>
+    <div class="pics" id="p-pics"></div>
+    <div class="q" id="p-q"></div>
+    <div class="answers" id="p-ans"></div>
+    <div class="fb" id="p-fb"></div>
+    <div class="hint" id="p-hint"></div>
+    <button class="btn" id="p-next" style="display:none" data-t="next_q"></button>
+  </div>
+  <p class="small-note" data-t="practice_note"></p>
+</section>
+
+<!-- TEST: TURINI TANLASH -->
+<section id="s-testmenu" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="test_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="info" data-t="test_note"></div>
+  <div id="tm-list"></div>
+</section>
+
+<!-- TEST -->
+<section id="s-test" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" id="t-count">1 / 10</span>
+    <span class="pill timerpill" id="t-timer">⏱ 3:00</span>
+  </div>
+  <div class="bar"><div id="t-bar" style="width:0%"></div></div>
+  <div class="card">
+    <button class="say" data-say="t" aria-label="Read">🔊</button>
+    <div class="pics" id="t-pics"></div>
+    <div class="q" id="t-q"></div>
+    <div class="answers" id="t-ans"></div>
+    <button class="btn" id="t-next"></button>
+  </div>
+</section>
+
+<!-- BOSHQOTIRMALAR -->
+<section id="s-puzzles" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="pz_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <p class="small-note" style="margin:0 0 12px;font-size:16px" data-t="pz_note"></p>
+  <div class="menu">
+    <button class="tile sm" style="background:var(--blue)" id="pz-seq"><span class="em">🔢</span><span data-t="pz_seq"></span></button>
+    <button class="tile sm" style="background:var(--green)" id="pz-odd"><span class="em">🔍</span><span data-t="pz_odd"></span></button>
+    <button class="tile sm" style="background:var(--orange)" id="pz-pat"><span class="em">🎨</span><span data-t="pz_pat"></span></button>
+    <button class="tile sm" style="background:var(--gold)" id="pz-mag"><span class="em">✨</span><span data-t="pz_mag"></span></button>
+    <button class="tile sm" style="background:#0F6E56" id="pz-log"><span class="em">🤔</span><span data-t="pz_log"></span></button>
+    <button class="tile sm" style="background:#993556" id="pz-tri"><span class="em">⚡</span><span data-t="pz_tri"></span></button>
+  </div>
+</section>
+
+<!-- UMUMIY SAVOL -->
+<section id="s-mcq" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="z-back" aria-label="Back">⬅</button>
+    <span class="pill" id="z-count">1 / 8</span>
+    <span class="pill">✅ <span id="z-ok">0</span></span>
+  </div>
+  <h2 id="z-title"></h2>
+  <div class="bar"><div id="z-bar" style="width:0%"></div></div>
+  <div class="info" id="z-info"></div>
+  <div class="card">
+    <button class="say" data-say="z" aria-label="Read">🔊</button>
+    <div class="pics" id="z-pics"></div>
+    <div class="q" id="z-q"></div>
+    <div class="answers" id="z-ans"></div>
+    <div class="fb" id="z-fb"></div>
+    <div class="hint" id="z-hint"></div>
+    <button class="btn" id="z-next" style="display:none" data-t="next_q"></button>
+  </div>
+</section>
+
+<!-- HISOB SIRLARI -->
+<section id="s-tricks" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-puz aria-label="Back">⬅</button>
+    <span class="pill" data-t="tricks_title"></span>
+    <span></span>
+  </div>
+  <p class="small-note" style="margin:0 0 12px;font-size:16px" data-t="tricks_note"></p>
+  <div id="tricks-list"></div>
+</section>
+
+<!-- XOTIRA -->
+<section id="s-memory" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" id="mem-moves"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="info" id="mem-info"></div>
+  <div class="mem" id="mem-grid"></div>
+</section>
+
+<!-- SUDOKU -->
+<section id="s-sudoku" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" data-t="sud_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="info" data-t="sud_info"></div>
+  <div class="sud" id="sud-grid"></div>
+  <div class="pad">
+    <button data-n="1">1</button><button data-n="2">2</button><button data-n="3">3</button><button data-n="4">4</button><button data-n="0" aria-label="Erase">⌫</button>
+  </div>
+  <p class="fb" id="sud-fb" style="font-size:17px"></p>
+  <div class="row">
+    <button class="btn" id="sud-check" data-t="check"></button>
+    <button class="btn sec" id="sud-new" data-t="new_game"></button>
+  </div>
+</section>
+
+<!-- TEZKOR O'YIN -->
+<section id="s-race" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="rc-back" aria-label="Back">⬅</button>
+    <span class="pill" data-t="race_pill"></span>
+    <span class="pill">✅ <span id="rc-score">0</span></span>
+  </div>
+  <div id="rc-intro" class="card" style="text-align:center">
+    <p class="big">⏱️</p>
+    <h2 data-t="race_title"></h2>
+    <p style="margin:6px 0" data-t="race_text"></p>
+    <p style="margin:6px 0;color:var(--muted)" id="rc-rec"></p>
+    <button class="btn" id="rc-go" style="background:var(--pink)" data-t="go"></button>
+  </div>
+  <div id="rc-game" style="display:none">
+    <p class="timer" id="rc-time">60</p>
+    <div class="bar"><div id="rc-bar" style="width:100%;background:var(--pink)"></div></div>
+    <div class="card">
+      <div class="pics" id="rc-pics"></div>
+      <div class="q" id="rc-q"></div>
+      <div class="answers" id="rc-ans"></div>
+    </div>
+  </div>
+</section>
+
+<!-- O'YINLAR -->
+<section id="s-games" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="games_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="menu">
+    <button class="tile wide" style="background:#26215C" id="go-chess"><span class="em">♟️</span><span><span data-t="sec_chess"></span><small data-t="ch_tile_sub"></small></span></button>
+    <button class="tile sm" style="background:var(--pink)" id="go-race"><span class="em">⏱️</span><span data-t="gm_race"></span></button>
+    <button class="tile sm" style="background:var(--purple)" id="pz-mem"><span class="em">🧠</span><span data-t="pz_mem"></span></button>
+    <button class="tile sm" style="background:var(--orange)" id="pz-sud"><span class="em">🔲</span><span data-t="pz_sud2"></span></button>
+    <button class="tile sm dim" style="background:var(--green)" data-soon2><span class="soon" data-t="soon"></span><span class="em">🗼</span><span data-t="gm_hanoi"></span></button>
+    <button class="tile sm dim" style="background:var(--gold)" data-soon2><span class="soon" data-t="soon"></span><span class="em">🎯</span><span data-t="gm_24"></span></button>
+    <button class="tile sm dim" style="background:#0F6E56" data-soon2><span class="soon" data-t="soon"></span><span class="em">🌀</span><span data-t="gm_maze"></span></button>
+    <button class="tile sm" style="background:#534AB7" id="go-logic"><span class="em">🕵️</span><span data-t="gm_logic"></span></button>
+  </div>
+</section>
+
+<!-- LABIRINT -->
+<section id="s-maze" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" id="mz-moves"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="chips" id="mz-size" style="justify-content:center;margin-bottom:10px"></div>
+  <div class="info" id="mz-info"></div>
+  <div class="mzb" id="mz-board"></div>
+  <div class="mzpad" id="mz-pad">
+    <span></span><button data-d="u">⬆️</button><span></span>
+    <button data-d="l">⬅️</button><button id="mz-new" class="mznew">🔄</button><button data-d="r">➡️</button>
+    <span></span><button data-d="d">⬇️</button><span></span>
+  </div>
+</section>
+
+<!-- MANTIQIY JADVAL -->
+<section id="s-logic" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" data-t="gm_logic"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="info" id="lg-info"></div>
+  <h3 data-t="lg_clues"></h3>
+  <div id="lg-clues"></div>
+  <div id="lg-grid"></div>
+  <p class="fb" id="lg-fb" style="font-size:17px;min-height:24px"></p>
+  <button class="btn" id="lg-check" data-t="lg_check"></button>
+  <div class="row2"><button class="btn sec small" id="lg-clear" data-t="g24_reset"></button><button class="btn sec small" id="lg-new" data-t="sd_new"></button></div>
+</section>
+
+<!-- SUDOKU (4x4, 6x6, 9x9) -->
+<section id="s-sud2" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" id="sd-mist"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="chips" id="sd-size" style="justify-content:center;margin-bottom:8px"></div>
+  <div class="chips" id="sd-diff" style="justify-content:center;margin-bottom:10px"></div>
+  <div class="info" id="sd-info"></div>
+  <div class="sud" id="sd-grid"></div>
+  <div class="pad" id="sd-pad"></div>
+  <p class="fb" id="sd-fb" style="font-size:17px;min-height:24px"></p>
+  <div class="row3"><button class="btn sec small" id="sd-note" data-t="sd_note"></button><button class="btn sec small" id="sd-hint" data-t="hn_hint"></button><button class="btn sec small" id="sd-new" data-t="sd_new"></button></div>
+</section>
+
+<!-- XANOY MINORASI -->
+<section id="s-hanoi" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" id="hn-moves"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <h2 data-t="gm_hanoi"></h2>
+  <div class="chips" id="hn-chips" style="justify-content:center;margin-bottom:10px"></div>
+  <div class="info" id="hn-info"></div>
+  <div class="hboard" id="hn-board"></div>
+  <div class="row2"><button class="btn sec small" id="hn-hint" data-t="hn_hint"></button><button class="btn sec small" id="hn-reset" data-t="g24_reset"></button></div>
+</section>
+
+<!-- 24 O'YINI -->
+<section id="s-g24" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-games aria-label="Back">⬅</button>
+    <span class="pill" id="g24-round"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="info" id="g24-info"></div>
+  <div class="g24t"><span>🎯</span><b id="g24-target">24</b></div>
+  <div class="g24tiles" id="g24-tiles"></div>
+  <div class="g24ops" id="g24-ops"></div>
+  <div class="row2"><button class="btn sec small" id="g24-undo" data-t="g24_undo"></button><button class="btn sec small" id="g24-reset" data-t="g24_reset"></button></div>
+  <div class="row2"><button class="btn sec small" id="g24-hint" data-t="hn_hint"></button><button class="btn sec small" id="g24-skip" data-t="g24_skip"></button></div>
+</section>
+
+<!-- SARGUZASHT XARITASI -->
+<section id="s-adv" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="adv-back" aria-label="Back">⬅</button>
+    <span class="pill" data-t="adv_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div id="adv-body"></div>
+</section>
+
+<!-- BOSS JANGI -->
+<section id="s-boss" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="bs-back" aria-label="Back">⬅</button>
+    <span class="pill" id="bs-hearts"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="bsarena">
+    <div class="bsb" id="bs-boss">👾</div><div class="bsfx" id="bs-fx"></div>
+    <b id="bs-name"></b>
+    <div class="bar bshp"><div id="bs-hp"></div></div><small id="bs-hpn"></small>
+  </div>
+  <div id="bs-intro" class="card" style="text-align:center">
+    <p class="bsay" id="bs-say"></p>
+    <p data-t="boss_rules"></p>
+    <button class="btn" id="bs-go" style="background:var(--orange)" data-t="go"></button>
+  </div>
+  <div id="bs-game" style="display:none" class="card">
+    <div class="pics" id="bs-pics"></div>
+    <div class="q" id="bs-q"></div>
+    <div class="answers" id="bs-ans"></div>
+  </div>
+</section>
+
+<!-- DO'KON -->
+<section id="s-shop" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="shop_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div id="shop-body"></div>
+</section>
+
+<!-- ALBOM -->
+<section id="s-album" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="album_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div id="alb-body"></div>
+</section>
+
+<!-- DIPLOM -->
+<section id="s-dipl" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="dp-back" aria-label="Back">⬅</button>
+    <span class="pill" data-t="dp_mine"></span>
+    <span></span>
+  </div>
+  <h2 id="dp-head" style="text-align:center;display:none"></h2>
+  <img id="dp-img" class="dpimg" alt="">
+  <div class="row2"><button class="btn" id="dp-save" data-t="dp_save"></button><button class="btn sec" id="dp-print" data-t="dp_print"></button></div>
+</section>
+
+<!-- OTA-ONALAR -->
+<section id="s-parent" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="pa-back" aria-label="Back">⬅</button>
+    <span class="pill" data-t="pa_title"></span>
+    <span></span>
+  </div>
+  <div class="patabs" id="pa-tabs">
+    <button data-tab="set" data-t="pa_t_set"></button><button data-tab="rep" data-t="pa_t_rep"></button>
+    <button data-tab="duel" data-t="pa_t_duel"></button><button data-tab="rt" data-t="pa_t_rt"></button>
+  </div>
+  <div id="pa-body"></div>
+</section>
+
+<!-- OILAVIY DUEL -->
+<section id="s-duel" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="du-back" aria-label="Back">⬅</button>
+    <span class="pill" id="du-round"></span>
+    <span class="pill" id="du-score">0 : 0</span>
+  </div>
+  <div id="du-intro" class="card" style="text-align:center">
+    <div class="duvs" id="du-vs"></div>
+    <p data-t="du_rules"></p>
+    <button class="btn" id="du-go" style="background:var(--pink)" data-t="go"></button>
+  </div>
+  <div id="du-game" style="display:none">
+    <div class="duw" id="du-who"></div>
+    <div class="card">
+      <div class="pics" id="du-pics"></div>
+      <div class="q" id="du-q"></div>
+      <div class="answers" id="du-ans"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HAYOTIY TOPSHIRIQLAR (bola) -->
+<section id="s-rtasks" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="rt_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div id="rtk-body"></div>
+</section>
+
+<!-- BILIMLAR DUNYOSI -->
+<section id="s-know" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="kn-back" aria-label="Back">⬅</button>
+    <span class="pill" data-t="know_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <p class="small-note" style="margin:0 0 12px;font-size:16px" data-t="know_note"></p>
+  <div id="kn-list"></div>
+</section>
+
+<!-- BILIM TURI -->
+<section id="s-kcat" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="kc-back" aria-label="Back">⬅</button>
+    <span class="pill" id="kc-title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div id="kc-body"></div>
+</section>
+
+<!-- DUNYO BO'YLAB -->
+<section id="s-world" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="w-back" aria-label="Back">⬅</button>
+    <span class="pill" data-t="w_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <p class="big">🌍</p>
+  <div id="w-list"></div>
+</section>
+<section id="s-wlist" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="wl-back" aria-label="Back">⬅</button>
+    <span class="pill" id="wl-title"></span>
+    <span></span>
+  </div>
+  <div class="info" id="wl-note"></div>
+  <div id="wl-body"></div>
+</section>
+
+<!-- SHAXMAT MENYUSI -->
+<section id="s-chess" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="ch-back" aria-label="Back">⬅</button>
+    <span class="pill" data-t="ch_title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <p class="big">♟️</p>
+  <div id="ch-list"></div>
+  <div id="ch-levels" style="display:none"></div>
+</section>
+
+<!-- SHAXMAT TAXTASI -->
+<section id="s-chessboard" class="screen">
+  <div class="top">
+    <button class="icon-btn" id="cb-back" aria-label="Back">⬅</button>
+    <span class="pill" id="cb-title"></span>
+    <span class="pill">⭐ <span class="star-count">0</span></span>
+  </div>
+  <div class="info" id="cb-info"></div>
+  <div class="cboard" id="cb-board"></div>
+  <p class="fb" id="cb-status" style="font-size:18px"></p>
+  <div id="cb-actions"></div>
+</section>
+
+<!-- NATIJA -->
+<section id="s-result" class="screen">
+  <div class="card" style="text-align:center">
+    <h2 id="r-title"></h2>
+    <div class="grade" id="r-grade" style="display:none"></div>
+    <div class="stars" id="r-stars"></div>
+    <p style="font-size:22px;font-weight:900;margin:4px 0" id="r-score"></p>
+    <div class="cmp" id="r-cmp" style="display:none"></div>
+    <p style="margin:4px 0;color:var(--muted)" id="r-best"></p>
+    <p style="margin:10px 0 0;font-weight:700" id="r-buddy"></p>
+  </div>
+  <button class="btn" id="r-up" style="display:none;background:var(--purple)"></button>
+  <div class="card" id="r-review-card" style="display:none">
+    <h3 data-t="review"></h3>
+    <div id="r-review"></div>
+  </div>
+  <div class="card" id="r-topics-card">
+    <p style="margin:0;font-weight:700" data-t="topics_repeat"></p>
+    <ul class="topics" id="r-topics"></ul>
+    <div id="r-tbtns"></div>
+  </div>
+  <div class="row">
+    <button class="btn" id="r-again" data-t="again"></button>
+    <button class="btn" id="r-map" style="display:none;background:#0F6E56" data-t="adv_map"></button>
+    <button class="btn sec" data-home data-t="menu"></button>
+  </div>
+</section>
+
+<!-- O'SISH -->
+<section id="s-growth" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="g_title"></span>
+    <span></span>
+  </div>
+  <div class="stats" id="g-stats"></div>
+  <div id="g-cmp"></div>
+  <div class="card">
+    <h3 data-t="g_7"></h3>
+    <div class="chart" id="g-chart"></div>
+    <div class="legend"><span><i style="background:var(--main)"></i><span data-t="g_correct"></span></span><span><i style="background:var(--light);border:1px solid var(--ans-border)"></i><span data-t="g_total"></span></span></div>
+  </div>
+  <div class="card"><h3 data-t="g_topics"></h3><div id="g-topics"></div></div>
+  <div class="card"><h3 data-t="g_recs"></h3><ul class="recs" id="g-recs"></ul></div>
+  <div class="card"><h3 data-t="dp_mine"></h3><div id="g-dipl"></div></div>
+  <div class="card"><h3 data-t="g_badges"></h3><div class="badges" id="g-badges"></div></div>
+</section>
+
+<!-- OILA -->
+<section id="s-family" class="screen">
+  <div class="top">
+    <button class="icon-btn" data-home aria-label="Back">⬅</button>
+    <span class="pill" data-t="fam_title"></span>
+    <span></span>
+  </div>
+  <div id="fam-body"></div>
+</section>
+
+</div>
+
+<div class="modal-back" id="lvl-modal">
+  <div class="modal">
+    <h2 data-t="choose_level"></h2>
+    <div class="lvl" id="levels-modal"></div>
+    <button class="btn sec small" id="lvl-close" data-t="close"></button>
+  </div>
+</div>
+<div class="modal-back" id="lang-modal">
+  <div class="modal">
+    <h2>🌍</h2>
+    <div class="langs" id="langs-modal"></div>
+    <button class="btn sec small" id="lang-close" data-t="close"></button>
+  </div>
+</div>
+<div class="modal-back" id="pin-modal" style="z-index:30">
+  <div class="modal" style="text-align:center;max-width:340px">
+    <h3 id="pin-title"></h3>
+    <div class="pindots" id="pin-dots"></div>
+    <div class="pinpad" id="pin-pad"></div>
+    <button class="btn sec small" id="pin-forgot" data-t="pin_forgot"></button>
+    <button class="btn sec small" id="pin-cancel" data-t="pin_cancel"></button>
+  </div>
+</div>
+<div class="plblock" id="pl-block"></div>
+<div class="toast" id="toast"></div>
+
+<script>window.I18N={};</script>
+<script src="lang/en.js"></script>
+<script src="lang/uz.js"></script>
+<script src="lang/ru.js"></script>
+<script src="lang/tr.js"></script>
+<script src="lang/kk.js"></script>
+<script src="lang/ky.js"></script>
+<script src="lang/tg.js"></script>
+<script src="lang/tk.js"></script>
+<script src="lang/chess-i18n.js"></script>
+<script src="lang/world-i18n.js"></script>
+<script src="lang/know-i18n.js"></script>
+<script src="lang/games2-i18n.js"></script>
+<script src="lang/parent-i18n.js"></script>
+<script src="lang/adv-i18n.js"></script>
+<script src="app.js"></script>
+<script src="chess-engine.js"></script>
+<script src="chess.js"></script>
+<script src="world-data.js"></script>
+<script src="world.js"></script>
+<script src="know-data.js"></script>
+<script src="know-data2.js"></script>
+<script src="know-data3.js"></script>
+<script src="know-home-uz.js"></script>
+<script src="know-home-a.js"></script>
+<script src="know-home-a2.js"></script>
+<script src="know-home-b.js"></script>
+<script src="know-home-b2.js"></script>
+<script src="know.js"></script>
+<script src="games2.js"></script>
+<script src="sudoku2.js"></script>
+<script src="games3.js"></script>
+<script src="parent.js"></script>
+<script src="adv.js"></script>
+<script src="extras.js"></script>
+<script src="diploma.js"></script>
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script>
+</body>
+</html>
